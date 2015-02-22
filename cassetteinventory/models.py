@@ -1,6 +1,7 @@
 from django.db import models
 
-# Create your models here 
+# Create your models here
+# Written by Kyle and Michael on 02/21/15
 
 class Tape(models.Model):
     title = models.CharField()
