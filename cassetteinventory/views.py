@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import RequestContext, loader
-from cassetteinventory.forms import TapeForm, ArtistForm, LabelForm
-from cassetteinventory.models import Artist, Tape, Label
+from cassetteinventory.forms import TapeForm, ArtistForm, LabelForm, GenreForm
+from cassetteinventory.models import Artist, Tape, Label, Genre
 
 # Create your views here.
 # This the intermediate between the input data and the display information - think "controller"
@@ -22,6 +22,7 @@ def AddTapeView(request):
             tape = Tape.objects.create(title=form.cleaned_data['title'], year=form.cleaned_data['year'])
             tape.artists.add(*form.cleaned_data['artists'])
             tape.labels.add(*form.cleaned_data['labels'])
+            tape.genre.add(*form.cleaned_data ['labels'])
             return HttpResponse("Hi bitch")
     else:
         form = TapeForm()
@@ -37,7 +38,7 @@ def AddArtistView(request):
             artist = Artist()
             artist.artistname = form.cleaned_data['artistname']
             artist.save()
-            return HttpResponse("Hi bitch")
+            return HttpResponse("You just saved an artist")
     else:
         form = ArtistForm()
 
@@ -53,8 +54,23 @@ def AddLabelView(request):
             label = Label()
             label.labelname = form.cleaned_data['labelname']
             label.save()
-            return HttpResponse("Hi bitch")
+            return HttpResponse("You just saved a label")
     else:
         form = LabelForm()
 
     return render(request, 'AddLabelTemplate.html', {'form':form})
+
+def AddGenreView(request):
+    if request.method == 'POST':
+        form = GenreForm(request.POST)
+
+        if form.is_valid():
+            #add form processing
+            genre = Genre()
+            genre.genrename = form.cleaned_data['genrename']
+            genre.save()
+            return HttpResponse("You just saved a genre")
+    else:
+        form = GenreForm()
+
+    return render(request, 'AddGenreTemplate.html', {'form':form})
