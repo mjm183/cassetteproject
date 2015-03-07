@@ -22,9 +22,9 @@ def AddTapeView(request):
             tape = Tape.objects.create(title=form.cleaned_data['title'], year=form.cleaned_data['year'])
             tape.artists.add(*form.cleaned_data['artists'])
             tape.labels.add(*form.cleaned_data['labels'])
-            tape.genre.add(*form.cleaned_data ['labels'])
-            return HttpResponse("Hi bitch")
-    else:
+            #tape.genres.add(Genre.objects.get(genrename=form.cleaned_data['genres']))
+            return HttpResponse(form.cleaned_data['genres'])
+    else:   
         form = TapeForm()
 
     return render(request, 'AddTapeTemplate.html', {'form':form})
